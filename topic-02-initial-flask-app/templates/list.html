@@ -2,18 +2,22 @@
     <h3>List:</h3>
     <table>
         <tr>
+            <th>ID</th>
             <th>Name</th>
-            <th>Kind</th>
+            <th>Type</th>
             <th>Age</th>
             <th>Owner</th>
         </tr>
-        {% for item in rows %}
+        {% for row in rows %}
         <tr>
-            <td>{{ item[1] }}</td>
-            <td>{{ item[2] }}</td>
-            <td>{{ item[3] }}</td>
-            <td>{{ item[4] }}</td>
+            {% for item in row %}
+            <td>{{ item }}</td>
+            {% endfor %}
+            <td><a href="/delete/{{row[0]}}">Delete</a></td>
+            <td><a href="/update/{{row[0]}}">Update</a></td>
         </tr>
         {% endfor %}
     </table>
+    <hr/>
+    <a href="/create">Create New Pet</a>
 </html>
