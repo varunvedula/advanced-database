@@ -11,7 +11,7 @@ def initialize(database_file):
 
 def get_pets():
     cursor = connection.cursor()
-    cursor.execute("""select * from pets""")
+    cursor.execute("""select * from pet""")
     pets = cursor.fetchall()
     pets = [dict(pet) for pet in pets]
     for pet in pets:
@@ -21,7 +21,7 @@ def get_pets():
 
 def get_pet(id):
     cursor = connection.cursor()
-    cursor.execute(f"""select * from pets where id = ?""", (id,))
+    cursor.execute(f"""select * from pet where id = ?""", (id,))
     rows = cursor.fetchall()
     try:
         (id, name, xtype, age, owner) = rows[0]
@@ -39,7 +39,7 @@ def create_pet(data):
         data["age"] = 0
     cursor = connection.cursor()
     cursor.execute(
-        """insert into pets(name, age, type, owner) values (?,?,?,?)""",
+        """insert into pet(name, age, type, owner) values (?,?,?,?)""",
         (data["name"], data["age"], data["type"], data["owner"]),
     )
     connection.commit()
@@ -56,7 +56,7 @@ def update_pet(id, data):
         data["age"] = 0
     cursor = connection.cursor()
     cursor.execute(
-        """update pets set name=?, age=?, type=?, owner=? where id=?""",
+        """update pet set name=?, age=?, type=?, owner=? where id=?""",
         (data["name"], data["age"], data["type"], data["owner"], id),
     )
     connection.commit()
@@ -64,7 +64,7 @@ def update_pet(id, data):
 
 def delete_pet(id):
     cursor = connection.cursor()
-    cursor.execute(f"""delete from pets where id = ?""", (id,))
+    cursor.execute(f"""delete from pet where id = ?""", (id,))
     connection.commit()
 
 
@@ -73,7 +73,7 @@ def setup_test_database():
     cursor = connection.cursor()
     cursor.execute(
         """
-        create table if not exists pets (
+        create table if not exists pet (
             id integer primary key autoincrement,
             name text not null,
             type text not null,
