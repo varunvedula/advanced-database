@@ -11,18 +11,15 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"]) 
 @app.route("/list", methods=["GET"])
 def get_list():
-    print("in app.py")
-    return "List"
-    #pets = database.get_pets()
-    #return render_template("list.html", pets=pets)     
+    pets = database.get_pets()
+    return render_template("list.html", pets=pets)     
 
 
 @app.route("/kind", methods=["GET"])
+@app.route("/kind/list", methods=["GET"])
 def get_kind_list():
-    print("in kind_list()")
-    return "Kind"
-    #pets = database.get_pets()
-    #return render_template("list.html", pets=pets)
+    kinds = database.get_kinds()
+    return render_template("kind_list.html", kinds=kinds)
 
 
 @app.route("/create", methods=["GET"])
@@ -51,38 +48,29 @@ def post_update(id):
     database.update_pet(id, data)
     return redirect(url_for("get_list"))  
 
+@app.route("/kind/create", methods=["GET"])
+def get_kind_create():
+        return render_template("kind_create.html")
 
-# @app.route("/kind", methods=["GET"])
-# @app.route("/kind/list", methods=["GET"])
-# def get_kind_list():
-#     print("in kind list")
-#     # kinds = database.get_kinds()
-#     kinds = []
-#     return "In kind list"
-#     return render_template("kind_list.html", kinds=kinds)     
+@app.route("/kind/create", methods=["POST"])
+def post_kind_create():
+    data = dict(request.form)
+    database.create_kind(data)
+    return redirect(url_for("get_kind_list"))
 
-# @app.route("/kind/create", methods=["GET"])
-# def get_kind_create():
-#     return render_template("kind_create.html")
+@app.route("/kind/delete/<id>", methods=["GET"])
+def get_kind_delete(id):
+    database.delete_kind(id)
+    return redirect(url_for("get_kind_list"))
 
-# @app.route("/kind/create", methods=["POST"])
-# def post_kind_create():
-#     data = dict(request.form)
-#     database.create_pet(data)
-#     return redirect(url_for("get_kind_list"))
+@app.route("/kind/update/<id>", methods=["GET"])
+def get_kind_update(id):
+    data = database.get_kind(id)
+    print(data)
+    return render_template("kind_update.html",data=data)
 
-# @app.route("/kind/delete/<id>", methods=["GET"])
-# def get_kind_delete(id):
-#     database.delete_pet(id)
-#     return redirect(url_for("get_kind_list"))
-
-# @app.route("/kind/update/<id>", methods=["GET"])
-# def get_kind_update(id):
-#     data = database.get_pet(id)
-#     return render_template("kind_update.html",data=data)
-
-# @app.route("/kind/update/<id>", methods=["POST"])
-# def post_kind_update(id):
-#     data = dict(request.form)
-#     database.update_pet(id, data)
-#     return redirect(url_for("get_kind_list"))
+@app.route("/kind/update/<id>", methods=["POST"])
+def post_kind_update(id):
+    data = dict(request.form)
+    database.update_kind(id, data)
+    return redirect(url_for("get_kind_list"))
