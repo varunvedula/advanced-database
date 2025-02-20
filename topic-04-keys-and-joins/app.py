@@ -24,11 +24,14 @@ def get_kind_list():
 
 @app.route("/create", methods=["GET"])
 def get_create():
-    return render_template("create.html")     
+    kinds = database.get_kinds()
+    print("KINDS = ",kinds)
+    return render_template("create.html", kinds=kinds)     
 
 @app.route("/create", methods=["POST"])
 def post_create():
     data = dict(request.form)
+    print("DATA=",data)
     database.create_pet(data)
     return redirect(url_for("get_list"))  
 
