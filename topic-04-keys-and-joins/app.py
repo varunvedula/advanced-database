@@ -63,13 +63,15 @@ def post_kind_create():
 
 @app.route("/kind/delete/<id>", methods=["GET"])
 def get_kind_delete(id):
-    database.delete_kind(id)
+    try:
+        database.delete_kind(id)
+    except Exception as e:
+        return render_template("error.html", error_text=str(e))
     return redirect(url_for("get_kind_list"))
 
 @app.route("/kind/update/<id>", methods=["GET"])
 def get_kind_update(id):
     data = database.get_kind(id)
-    print(data)
     return render_template("kind_update.html",data=data)
 
 @app.route("/kind/update/<id>", methods=["POST"])

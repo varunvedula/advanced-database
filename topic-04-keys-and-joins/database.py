@@ -6,6 +6,7 @@ connection = None
 def initialize(database_file):
     global connection
     connection = sqlite3.connect(database_file, check_same_thread=False)
+    connection.execute("PRAGMA foreign_keys = 1")
     connection.row_factory = sqlite3.Row
 
 
